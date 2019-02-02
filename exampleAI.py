@@ -87,4 +87,4 @@ class IAiAI():
             while data[ 1 ] == 3:
                 data = self.game.AttackCell( target.x, target.y )
 
-bot = IAiAI
+bot = IAiAI()
