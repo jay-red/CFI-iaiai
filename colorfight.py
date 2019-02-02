@@ -83,6 +83,7 @@ class Game:
         self.energy = 0
         self.gold = 0
         self.gameVersion = ''
+        self.lastAttack = (-1,-1)
         self.Refresh()
 
     def JoinGame(self, name, password = None, force = False, host = None):
@@ -123,11 +124,14 @@ class Game:
 
     def AttackCell(self, x, y, boost = False):
         if self.token != '':
+            if x == self.lastAttack[ 0 ] and y == self.lastAttack[ 1 ]:
+                return False, 254, "Already attacked this cell"
             headers = {'content-type': 'application/json'}
             r = requests.post(hostUrl + 'attack', data=json.dumps({'cellx':x, 'celly':y, 'boost': boost, 'token':self.token}), headers = headers)
             if r.status_code == 200:
                 data = r.json()
                 if data['err_code'] == 0:
+                    self.lastAttack = ( x, y )
                     return True, None, None
                 else:
                     return False, data['err_code'], data['err_msg']
