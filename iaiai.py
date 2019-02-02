@@ -9,11 +9,13 @@ class IAiAI():
         # Initialize the Panda Colorfight Client
         self.game = cf.Game()
         self.targets = []
+        self.started = False
 
         # Attempt to join the game
         if self.game.JoinGame( name ):
             self.game.Refresh()
-            self.Alina()
+            if not self.started:
+                self.Alina()
             self.FetchInfo()
             self.playing = True
             self.refreshThread = Thread( target = self.Refresh )
@@ -26,6 +28,8 @@ class IAiAI():
             self.stopThread.start()
 
     def Alina( self ):
+        start = ( -1, -1 )
+        offset = ( 0, 0 )
         heartTemplate = []
         heartTemplate.append( ( 0, -1 ) )
         heartTemplate.append( ( 0, 0 ) )
@@ -54,11 +58,20 @@ class IAiAI():
         heartTemplate.append( ( -3, -1 ) )
         heartTemplate.append( ( +3, 0 ) )
         heartTemplate.append( ( +3, -1 ) )
+        heartCells = []
         for x in range( 0, 30 ):
             for y in range( 0, 30 ):
                 c = self.game.GetCell( x, y )
                 if c.owner == self.game.uid and c.isBase:
-                    print( x, y )
+                    start = ( x, y )
+        if start[ 0 ] > 26:
+            offset[ 0 ] = ( -2, 0 )
+        elif start[ 0 ] < 3:
+            offset[ 0 ] = ( 2, 0 )
+        elif start[ 1 ] > 26:
+            offset[ 1 ] = ( 0, -2 )
+        elif start[ 1 ] < 2:
+            offset[ 1 ] = ( 0, 1 )
 
     # Refreshes the Game State
     def Refresh( self ):
