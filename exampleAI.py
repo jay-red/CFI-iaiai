@@ -70,7 +70,7 @@ class IAiAI():
                 # Get a cell
                 c = self.game.GetCell(x,y)
                 # If the cell I got is mine
-                if c.owner == g.uid:
+                if c.owner == self.game.uid:
                     up, right, down, left = self.GetAdjacent( c )
                     if self.CheckTarget( up ):
                         self.targets.append( up )
