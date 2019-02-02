@@ -5,7 +5,7 @@ from threading import Thread
 from math import sqrt
 
 class IAiAI():
-    def __init__( self ):
+    def __init__( self, name = "AI? More like 愛" ):
         # Initialize the Panda Colorfight Client
         self.game = cf.Game()
         self.targets = []
@@ -34,11 +34,12 @@ class IAiAI():
     # Runs all base related functions
     def Base( self ):
         while self.playing:
-            self.FetchBases()
-            try:
-                self.BuildLoop()
-            except:
-                pass
+            #self.FetchBases()
+            #try:
+            #    self.BuildLoop()
+            #except:
+            #    pass
+            pass
 
     # Runs all the AI actions
     def Play( self ):
@@ -86,22 +87,4 @@ class IAiAI():
             while data[ 1 ] == 3:
                 data = self.game.AttackCell( target.x, target.y )
 
-if __name__ == '__main__':
-    # Instantiate a Game object.
-    g = colorfight.Game()
-    # You need to join the game using JoinGame(). 'MyAI' is the name of your
-    # AI, you can change that to anything you want. This function will generate
-    # a token file in the folder which preserves your identity so that you can
-    # stop your AI and continue from the last time you quit. 
-    # If there's a token and the token is valid, JoinGame() will continue. If
-    # not, you will join as a new player.
-    while g.currTime < g.planStartTime:
-        g.Refresh()
-    if g.JoinGame('MyAI'):
-        # Put you logic in a while True loop so it will run forever until you 
-        # manually stop the game
-        while True:
-            # Use a nested for loop to iterate through the cells on the map
-            
-    else:
-        print("Failed to join the game!")
+bot = IAiAI
