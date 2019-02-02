@@ -13,8 +13,8 @@ class IAiAI():
         # Attempt to join the game
         if self.game.JoinGame( name ):
             self.game.Refresh()
+            self.Alina()
             self.FetchInfo()
-
             self.playing = True
             self.refreshThread = Thread( target = self.Refresh )
             self.refreshThread.start()
@@ -24,6 +24,41 @@ class IAiAI():
             self.baseThread.start()
             self.stopThread = Thread( target = self.Stop )
             self.stopThread.start()
+
+    def Alina( self ):
+        heartTemplate = []
+        heartTemplate.append( ( 0, -1 ) )
+        heartTemplate.append( ( 0, 0 ) )
+        heartTemplate.append( ( 0, 1 ) )
+        heartTemplate.append( ( 0, 2 ) )
+        heartTemplate.append( ( 0, 3 ) )
+        heartTemplate.append( ( -1, -2 ) )
+        heartTemplate.append( ( -1, -1 ) )
+        heartTemplate.append( ( -1, 0 ) )
+        heartTemplate.append( ( -1, 1 ) )
+        heartTemplate.append( ( -1, 2 ) )
+        heartTemplate.append( ( +1, -2 ) )
+        heartTemplate.append( ( +1, -1 ) )
+        heartTemplate.append( ( +1, 0 ) )
+        heartTemplate.append( ( +1, 1 ) )
+        heartTemplate.append( ( +1, 2 ) )
+        heartTemplate.append( ( -2, -2 ) )
+        heartTemplate.append( ( -2, -1 ) )
+        heartTemplate.append( ( -2, 0 ) )
+        heartTemplate.append( ( -2, 1 ) )
+        heartTemplate.append( ( +2, -2 ) )
+        heartTemplate.append( ( +2, -1 ) )
+        heartTemplate.append( ( +2, 0 ) )
+        heartTemplate.append( ( +2, 1 ) )
+        heartTemplate.append( ( -3, 0 ) )
+        heartTemplate.append( ( -3, -1 ) )
+        heartTemplate.append( ( +3, 0 ) )
+        heartTemplate.append( ( +3, -1 ) )
+        for x in range( 0, 30 ):
+            for y in range( 0, 30 ):
+                c = self.game.GetCell( x, y )
+                if c.owner == self.game.uid and c.isBase:
+                    print( x, y )
 
     # Refreshes the Game State
     def Refresh( self ):
