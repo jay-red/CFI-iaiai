@@ -4,7 +4,7 @@ import os
 import random
 import threading
 
-hostUrl   = 'http://colorfight.herokuapp.com/'
+hostUrl   = 'http://troycolorfight.herokuapp.com/'
 #hostUrl   = 'http://localhost:8000/'
 
 def CheckToken(token):
@@ -71,6 +71,7 @@ class Game:
         self.uid   = -1
         self.endTime = 0
         self.joinEndTime = 0
+        self.planStartTime = -1
         self.gameId = 0
         self.users = []
         self.cellNum = 0
@@ -217,6 +218,8 @@ class Game:
                 self.currTime = self.data['info']['time']
                 self.endTime = self.data['info']['end_time']
                 self.joinEndTime = self.data['info']['join_end_time']
+                if "plan_start_time" in self.data['info']:
+                    self.planStartTime = self.data['info']['plan_start_time']
                 self.gameId = self.data['info']['game_id']
                 self.lastUpdate = self.currTime
                 self.RefreshUsers(self.data['users'])
@@ -233,6 +236,8 @@ class Game:
                 self.currTime = d['info']['time']
                 self.endTime = self.data['info']['end_time']
                 self.joinEndTime = self.data['info']['join_end_time']
+                if "plan_start_time" in self.data['info']:
+                    self.planStartTime = self.data['info']['plan_start_time']
                 self.gameId = self.data['info']['game_id']
                 self.lastUpdate = self.currTime
                 self.RefreshUsers(self.data['users'])
