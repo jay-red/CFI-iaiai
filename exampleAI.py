@@ -1,5 +1,5 @@
 # You need to import colorfight for all the APIs
-import colorfight
+import colorfight as cf
 import random
 from threading import Thread
 from math import sqrt
