@@ -123,7 +123,7 @@ class IAiAI():
     # Runs all base related functions
     def Base( self ):
         while self.playing:
-            if self.game.gold >= 60 and self.baseNum < 3:
+            if self.game.gold >= 60 and self.game.baseNum < 3:
                 cell = random.choice( self.heartCells )
                 self.game.BuildBase( cell[ 0 ], cell[ 1 ] )
             #self.FetchBases()
