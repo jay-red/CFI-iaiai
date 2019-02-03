@@ -10,12 +10,12 @@ class IAiAI():
         self.game = cf.Game()
         self.targets = []
         self.started = False
+        self.startCell = (-1, -1)
 
         # Attempt to join the game
         if self.game.JoinGame( name ):
             self.game.Refresh()
-            if not self.started:
-                self.Alina()
+            self.Alina()
             self.FetchInfo()
             self.playing = True
             self.refreshThread = Thread( target = self.Refresh )
@@ -28,7 +28,7 @@ class IAiAI():
             self.stopThread.start()
 
     def Alina( self ):
-        start = ( -1, -1 )
+        self.startCell = ( -1, -1 )
         offset = ( 0, 0 )
         heartTemplate = []
         heartTemplate.append( ( 0, -1 ) )
@@ -58,20 +58,31 @@ class IAiAI():
         heartTemplate.append( ( -3, -1 ) )
         heartTemplate.append( ( +3, 0 ) )
         heartTemplate.append( ( +3, -1 ) )
-        heartCells = []
+        self.heartCells = []
         for x in range( 0, 30 ):
             for y in range( 0, 30 ):
                 c = self.game.GetCell( x, y )
                 if c.owner == self.game.uid and c.isBase:
-                    start = ( x, y )
-        if start[ 0 ] > 26:
+                    self.startCell = ( x, y )
+        if self.startCell[ 0 ] > 26:
             offset[ 0 ] = ( -2, 0 )
-        elif start[ 0 ] < 3:
+        elif self.startCell[ 0 ] < 3:
             offset[ 0 ] = ( 2, 0 )
-        elif start[ 1 ] > 26:
+        elif self.startCell[ 1 ] > 26:
             offset[ 1 ] = ( 0, -2 )
-        elif start[ 1 ] < 2:
+        elif self.startCell[ 1 ] < 2:
             offset[ 1 ] = ( 0, 1 )
+        for temp in heartTemplate:
+            self.heartCells.append( ( temp[ 0 ] + offset[ 0 ], temp[ 1 ] + offset[ 1 ] ) )
+        building = True
+        while building:
+            building = False
+            for cell in self.heartCells:
+                c = self.game.GetCell( cell[ 0 ], cell[ 1 ] )
+                if c != None and 0 < c.takeTime < 4 and c.owner != self.game.uid:
+                    print( self.game.AttackCell( cell[ 0 ], cell[ 1 ] ) )
+                    self.game.Refresh()
+                    building = True
 
     # Refreshes the Game State
     def Refresh( self ):
@@ -92,7 +103,8 @@ class IAiAI():
     # Runs all the AI actions
     def Play( self ):
         while self.playing:
-            self.GameLoop()
+            #self.GameLoop()
+            print( "game!" )
 
     # Allows for keyboard interrupt
     def Stop( self ):
