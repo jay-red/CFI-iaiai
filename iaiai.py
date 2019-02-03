@@ -77,7 +77,7 @@ class IAiAI():
         for temp in heartTemplate:
             self.heartCells.append( ( self.startCell[ 0 ] + temp[ 0 ] + offset[ 0 ], self.startCell[ 1 ] + temp[ 1 ] + offset[ 1 ] ) )
         bottom = ( 0 + self.startCell[ 0 ] + offset[ 0 ], 3 + self.startCell[ 1 ] + offset[ 1 ] )
-        for cell in heartCells:
+        for cell in self.heartCells:
             up = ( cell[ 0 ], cell[ 1 ] - 1 )
             right = ( cell[ 0 ] + 1, cell[ 1 ] )
             down = ( cell[ 0 ], cell[ 1 ] + 1 )
