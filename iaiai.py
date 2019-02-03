@@ -9,6 +9,10 @@ class IAiAI():
         # Initialize the Panda Colorfight Client
         self.game = cf.Game()
         self.targets = []
+        self.adjacentGold = []
+        self.adjacentEnergy = []
+        self.emptyGold = []
+        self.emptyEnergy = []
         self.started = False
         self.startCell = (-1, -1)
         self.blacklist = set()
@@ -153,10 +157,25 @@ class IAiAI():
     def CheckTarget( self, cell ):
         if not cell:
             return False
+        if cell.cellType == "gold":
+            self.adjacentGold.append( cell )
+        elif cell.cellType == "energy":
+            self.adjacentEnergy.append( cell )
         return not ( cell.x, cell.y ) in self.blacklist and cell.owner != self.game.uid and 0 < cell.takeTime < 4.0
 
     def FetchInfo( self ):
         self.targets.clear()
+        self.adjacentGold.clear()
+        self.adjacentEnergy.clear()
+        self.emptyEnergy.clear()
+        self.emptyGold.clear()
+        for x in range(30):
+            for y in range(30):
+                c = self.game.GetCell(x,y)
+                if c.cellType == "gold" and c.owner == 0:
+                    self.emptyGold.append( c )
+                elif c.cellType == "energy" and c.owner == 0:
+                    self.emptyEnergy.append( c )
         for x in range(30):
             for y in range(30):
                 # Get a cell
@@ -173,10 +192,35 @@ class IAiAI():
                     if self.CheckTarget( left ):
                         self.targets.append( left ) 
 
-    def GameLoop( self ):
-        for target in self.targets:
+    def Pursue( self, targets ):
+        targetCells = []
+        for target in targets:
+            for adjacent in self.targets:
+                targetCells.append( abs( adjacent.x - target.x ) + abs( adjacent.y - target.y ), adjacent )
+        targetCells.sort( key = lambda tup: ( tup[ 0 ] ) )
+        for target in targetCells:
+            target = target[ 0 ]
             data = self.game.AttackCell( target.x, target.y )
             while data[ 1 ] == 3:
                 data = self.game.AttackCell( target.x, target.y )
+
+    def GameLoop( self ):
+        for target in self.adjacentGold:
+            data = self.game.AttackCell( target.x, target.y )
+            while data[ 1 ] == 3:
+                data = self.game.AttackCell( target.x, target.y )
+        for target in self.adjacentEnergy:
+            data = self.game.AttackCell( target.x, target.y )
+            while data[ 1 ] == 3:
+                data = self.game.AttackCell( target.x, target.y )
+        if len( self.emptyEnergy ) > 0 and self.game.energyCellNum < 1:
+            self.Pursue( self.emptyEnergy )
+        elif len( self.emptyGold ) > 0:
+            self.Pursue( self.emptyGold )
+        else:
+            for target in self.targets:
+                data = self.game.AttackCell( target.x, target.y )
+                while data[ 1 ] == 3:
+                    data = self.game.AttackCell( target.x, target.y )
 
 bot = IAiAI()
