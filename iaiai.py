@@ -81,8 +81,9 @@ class IAiAI():
                 print( cell )
                 c = self.game.GetCell( cell[ 0 ], cell[ 1 ] )
                 if c != None and 0 < c.takeTime < 4 and c.owner != self.game.uid:
-                    print( self.game.AttackCell( cell[ 0 ], cell[ 1 ] ) )
-                    self.game.Refresh()
+                    data = self.game.AttackCell( cell[ 0 ], cell[ 1 ] )
+                    if data[ 0 ]:
+                        self.game.Refresh()
                     building = True
 
     # Refreshes the Game State
