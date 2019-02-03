@@ -199,7 +199,7 @@ class IAiAI():
                 targetCells.append( ( abs( adjacent.x - target.x ) + abs( adjacent.y - target.y ), adjacent ) )
         targetCells.sort( key = lambda tup: ( tup[ 0 ] ) )
         for target in targetCells:
-            target = target[ 0 ]
+            target = target[ 1 ]
             data = self.game.AttackCell( target.x, target.y )
             while data[ 1 ] == 3:
                 data = self.game.AttackCell( target.x, target.y )
