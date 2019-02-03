@@ -78,6 +78,10 @@ class IAiAI():
             self.heartCells.append( ( self.startCell[ 0 ] + temp[ 0 ] + offset[ 0 ], self.startCell[ 1 ] + temp[ 1 ] + offset[ 1 ] ) )
         bottom = ( 0 + self.startCell[ 0 ] + offset[ 0 ], 3 + self.startCell[ 1 ] + offset[ 1 ] )
         for cell in self.heartCells:
+            nw = ( cell[ 0 ] - 1, cell[ 1 ] - 1 )
+            ne = ( cell[ 0 ] + 1, cell[ 1 ] - 1 )
+            sw = ( cell[ 0 ] - 1, cell[ 1 ] + 1 )
+            se  = ( cell[ 0 ] + 1, cell[ 1 ] + 1 )
             up = ( cell[ 0 ], cell[ 1 ] - 1 )
             right = ( cell[ 0 ] + 1, cell[ 1 ] )
             down = ( cell[ 0 ], cell[ 1 ] + 1 )
@@ -90,6 +94,14 @@ class IAiAI():
                 self.blacklist.add( down )
             if not left in self.heartCells:
                 self.blacklist.add( left )
+            if not nw in self.heartCells:
+                self.blacklist.add( nw )
+            if not ne in self.heartCells:
+                self.blacklist.add( ne )
+            if not sw in self.heartCells and not cell == bottom:
+                self.blacklist.add( sw )
+            if not se in self.heartCells and not cell == bottom:
+                self.blacklist.add( se )
         building = True
         while building:
             building = False
