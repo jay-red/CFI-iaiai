@@ -157,9 +157,9 @@ class IAiAI():
     def CheckTarget( self, cell ):
         if not cell:
             return False
-        if cell.cellType == "gold" and not ( cell.x, cell.y ) in self.blacklist :
+        if cell.cellType == "gold" and not ( cell.x, cell.y ) in self.blacklist and cell.owner != self.game.uid:
             self.adjacentGold.append( cell )
-        elif cell.cellType == "energy" and not ( cell.x, cell.y ) in self.blacklist:
+        elif cell.cellType == "energy" and not ( cell.x, cell.y ) in self.blacklist and cell.owner != self.game.uid:
             self.adjacentEnergy.append( cell )
         return not ( cell.x, cell.y ) in self.blacklist and cell.owner != self.game.uid and 0 < cell.takeTime < 4.0
 
