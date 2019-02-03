@@ -65,13 +65,13 @@ class IAiAI():
                 if c.owner == self.game.uid and c.isBase:
                     self.startCell = ( x, y )
         if self.startCell[ 0 ] > 26:
-            offset[ 0 ] = ( -2, 0 )
+            offset = ( -2, 0 )
         elif self.startCell[ 0 ] < 3:
-            offset[ 0 ] = ( 2, 0 )
+            offset = ( 2, 0 )
         elif self.startCell[ 1 ] > 26:
-            offset[ 1 ] = ( 0, -2 )
+            offset = ( 0, -2 )
         elif self.startCell[ 1 ] < 2:
-            offset[ 1 ] = ( 0, 1 )
+            offset = ( 0, 1 )
         for temp in heartTemplate:
             self.heartCells.append( ( temp[ 0 ] + offset[ 0 ], temp[ 1 ] + offset[ 1 ] ) )
         building = True
