@@ -157,9 +157,9 @@ class IAiAI():
     def CheckTarget( self, cell ):
         if not cell:
             return False
-        if cell.cellType == "gold":
+        if cell.cellType == "gold" and not ( cell.x, cell.y ) in self.blacklist :
             self.adjacentGold.append( cell )
-        elif cell.cellType == "energy":
+        elif cell.cellType == "energy" and not ( cell.x, cell.y ) in self.blacklist:
             self.adjacentEnergy.append( cell )
         return not ( cell.x, cell.y ) in self.blacklist and cell.owner != self.game.uid and 0 < cell.takeTime < 4.0
 
@@ -196,7 +196,7 @@ class IAiAI():
         targetCells = []
         for target in targets:
             for adjacent in self.targets:
-                targetCells.append( abs( adjacent.x - target.x ) + abs( adjacent.y - target.y ), adjacent )
+                targetCells.append( ( abs( adjacent.x - target.x ) + abs( adjacent.y - target.y ), adjacent ) )
         targetCells.sort( key = lambda tup: ( tup[ 0 ] ) )
         for target in targetCells:
             target = target[ 0 ]
