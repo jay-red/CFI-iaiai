@@ -11,6 +11,7 @@ class IAiAI():
         self.targets = []
         self.started = False
         self.startCell = (-1, -1)
+        self.blacklist = set()
 
         # Attempt to join the game
         if self.game.JoinGame( name ):
@@ -30,6 +31,7 @@ class IAiAI():
     def Alina( self ):
         self.startCell = ( -1, -1 )
         offset = ( 0, 0 )
+        bottom = ( 0, 3 )
         heartTemplate = []
         heartTemplate.append( ( 0, -1 ) )
         heartTemplate.append( ( 0, 0 ) )
@@ -68,12 +70,26 @@ class IAiAI():
             offset = ( -2, 0 )
         elif self.startCell[ 0 ] < 3:
             offset = ( 2, 0 )
-        elif self.startCell[ 1 ] > 26:
+        elif self.startCell[ 1 ] > 25:
             offset = ( 0, -2 )
         elif self.startCell[ 1 ] < 2:
             offset = ( 0, 1 )
         for temp in heartTemplate:
             self.heartCells.append( ( self.startCell[ 0 ] + temp[ 0 ] + offset[ 0 ], self.startCell[ 1 ] + temp[ 1 ] + offset[ 1 ] ) )
+        bottom = ( 0 + self.startCell[ 0 ] + offset[ 0 ], 3 + self.startCell[ 1 ] + offset[ 1 ] )
+        for cell in heartCells:
+            up = ( cell[ 0 ], cell[ 1 ] - 1 )
+            right = ( cell[ 0 ] + 1, cell[ 1 ] )
+            down = ( cell[ 0 ], cell[ 1 ] + 1 )
+            left = ( cell[ 0 ] - 1, cell[ 1 ] )
+            if not up in heartCells:
+                self.blacklist.add( up )
+            if not right in heartCells:
+                self.blacklist.add( right )
+            if not down in heartCells and not cell == bottom:
+                self.blacklist.add( down )
+            if not left in heartCells:
+                self.blacklist.add( left )
         building = True
         while building:
             building = False
@@ -95,6 +111,9 @@ class IAiAI():
     # Runs all base related functions
     def Base( self ):
         while self.playing:
+            if self.game.gold >= 60 and self.baseNum < 3:
+                cell = random.choice( self.heartCells )
+                self.game.BuildBase( cell[ 0 ], cell[ 1 ] )
             #self.FetchBases()
             #try:
             #    self.BuildLoop()
@@ -105,8 +124,7 @@ class IAiAI():
     # Runs all the AI actions
     def Play( self ):
         while self.playing:
-            #self.GameLoop()
-            print( "game!" )
+            self.GameLoop()
 
     # Allows for keyboard interrupt
     def Stop( self ):
@@ -132,7 +150,7 @@ class IAiAI():
                 # Get a cell
                 c = self.game.GetCell(x,y)
                 # If the cell I got is mine
-                if c.owner == self.game.uid:
+                if c.owner == self.game.uid and not (x, y) in self.blacklist:
                     up, right, down, left = self.GetAdjacent( c )
                     if self.CheckTarget( up ):
                         self.targets.append( up )
