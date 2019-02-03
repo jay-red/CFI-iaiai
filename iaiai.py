@@ -29,7 +29,6 @@ class IAiAI():
             self.stopThread.start()
 
     def Alina( self ):
-        self.startCell = ( -1, -1 )
         offset = ( 0, 0 )
         bottom = ( 0, 3 )
         heartTemplate = []
@@ -61,11 +60,12 @@ class IAiAI():
         heartTemplate.append( ( +3, 0 ) )
         heartTemplate.append( ( +3, -1 ) )
         self.heartCells = []
-        for x in range( 0, 30 ):
-            for y in range( 0, 30 ):
-                c = self.game.GetCell( x, y )
-                if c.owner == self.game.uid and c.isBase:
-                    self.startCell = ( x, y )
+        if not self.started:
+            for x in range( 0, 30 ):
+                for y in range( 0, 30 ):
+                    c = self.game.GetCell( x, y )
+                    if c.owner == self.game.uid and c.isBase:
+                        self.startCell = ( x, y )
         if self.startCell[ 0 ] > 26:
             offset = ( -2, 0 )
         elif self.startCell[ 0 ] < 3:
