@@ -73,7 +73,7 @@ class IAiAI():
         elif self.startCell[ 1 ] < 2:
             offset = ( 0, 1 )
         for temp in heartTemplate:
-            self.heartCells.append( ( temp[ 0 ] + offset[ 0 ], temp[ 1 ] + offset[ 1 ] ) )
+            self.heartCells.append( ( self.startCell[ 0 ] + temp[ 0 ] + offset[ 0 ], self.startCell[ 1 ] + temp[ 1 ] + offset[ 1 ] ) )
         building = True
         while building:
             building = False
