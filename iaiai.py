@@ -212,12 +212,14 @@ class IAiAI():
             while data[ 1 ] == 3:
                 data = self.game.AttackCell( target.x, target.y )
             if data[ 0 ]:
+                self.adjacentGold.clear()
                 return
         for target in self.adjacentEnergy:
             data = self.game.AttackCell( target.x, target.y )
             while data[ 1 ] == 3:
                 data = self.game.AttackCell( target.x, target.y )
             if data[ 0 ]:
+                self.adjacentEnergy.clear()
                 return
         if len( self.emptyEnergy ) > 0 and self.game.energyCellNum < 1:
             self.Pursue( self.emptyEnergy )
