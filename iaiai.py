@@ -82,13 +82,13 @@ class IAiAI():
             right = ( cell[ 0 ] + 1, cell[ 1 ] )
             down = ( cell[ 0 ], cell[ 1 ] + 1 )
             left = ( cell[ 0 ] - 1, cell[ 1 ] )
-            if not up in heartCells:
+            if not up in self.heartCells:
                 self.blacklist.add( up )
-            if not right in heartCells:
+            if not right in self.heartCells:
                 self.blacklist.add( right )
-            if not down in heartCells and not cell == bottom:
+            if not down in self.heartCells and not cell == bottom:
                 self.blacklist.add( down )
-            if not left in heartCells:
+            if not left in self.heartCells:
                 self.blacklist.add( left )
         building = True
         while building:
