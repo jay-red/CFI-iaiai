@@ -141,7 +141,7 @@ class IAiAI():
     def CheckTarget( self, cell ):
         if not cell:
             return False
-        return cell.owner != self.game.uid and 0 < cell.takeTime < 4.0
+        return not ( cell.x, cell.y ) in self.blacklist and cell.owner != self.game.uid and 0 < cell.takeTime < 4.0
 
     def FetchInfo( self ):
         self.targets.clear()
@@ -150,7 +150,7 @@ class IAiAI():
                 # Get a cell
                 c = self.game.GetCell(x,y)
                 # If the cell I got is mine
-                if c.owner == self.game.uid and not (x, y) in self.blacklist:
+                if c.owner == self.game.uid:
                     up, right, down, left = self.GetAdjacent( c )
                     if self.CheckTarget( up ):
                         self.targets.append( up )
